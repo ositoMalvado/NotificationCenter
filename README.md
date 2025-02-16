@@ -1,5 +1,5 @@
-![Visitor Count](https://profile-counter.glitch.me/NotificationCenter/count.svg)
-
+![Visitor Count](https://profile-counter.glitch.me/NotificationCenter/count.svg)<br>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # 🔔 Flet Notification Widget
 
