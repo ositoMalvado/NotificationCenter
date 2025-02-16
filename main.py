@@ -24,6 +24,8 @@ def main(page: ft.Page):
         out_duration=500,
         in_scale=2,
         in_opacity=0.5,
+        width=250,
+        height=120,
         in_offset=ft.Offset(0, -2),
         in_offset_curve=ft.AnimationCurve.FAST_OUT_SLOWIN,
         out_scale=1.5,
