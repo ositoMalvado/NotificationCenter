@@ -24,6 +24,8 @@ from NotificationCenter import NotificationCenter, NotificationTypes
 def main(page: ft.Page):
     nc = NotificationCenter(alignment=ft.alignment.top_right)
     
+    page.add(nc)
+
     # Add notification
     nc.add_notification(
         content=ft.Text("File saved successfully!", color=ft.Colors.BLACK),
@@ -31,7 +33,6 @@ def main(page: ft.Page):
         duration=3000
     )
     
-    page.add(nc)
 
 ft.app(main)
 ```
