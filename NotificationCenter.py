@@ -10,12 +10,54 @@ class NotificationTypes(Enum):
     WARNING = "warning"
     ERROR = "error"
 
-    def __str__(self):
-        return self.value
-
 
 @dataclass
 class NotificationStyle:
+    """
+    A dataclass that defines the style and animation properties for notifications.
+
+    This class provides customizable styling options for notifications, including dimensions,
+    animations, colors, and icons. It also includes methods to retrieve specific styles
+    based on the notification type.
+
+    Attributes:
+        height (int, optional): The height of the notification. Defaults to 70.
+        width (int, optional): The width of the notification. Defaults to 200.
+        spacing (int, optional): The spacing between notifications. Defaults to 10.
+        border_radius (int, optional): The border radius of the notification. Defaults to 5.
+        padding (int, optional): The padding inside the notification. Defaults to 10.
+        in_duration (int, optional): The duration of the "in" animation in milliseconds. Defaults to 666.
+        position_animation (ft.AnimationCurve, optional): The animation curve for position changes.
+            Defaults to `ft.AnimationCurve.FAST_OUT_SLOWIN`.
+        in_offset (ft.Offset, optional): The offset for the "in" animation. Defaults to `ft.Offset(0, 0)`.
+        in_offset_curve (ft.AnimationCurve, optional): The animation curve for the "in" offset.
+            Defaults to `ft.AnimationCurve.FAST_OUT_SLOWIN`.
+        out_offset_curve (ft.AnimationCurve, optional): The animation curve for the "out" offset.
+            Defaults to `ft.AnimationCurve.FAST_OUT_SLOWIN`.
+        in_opacity (float, optional): The starting opacity for the "in" animation. Defaults to 0.0.
+        in_opacity_curve (ft.AnimationCurve, optional): The animation curve for the "in" opacity.
+            Defaults to `ft.AnimationCurve.FAST_OUT_SLOWIN`.
+        out_opacity_curve (ft.AnimationCurve, optional): The animation curve for the "out" opacity.
+            Defaults to `ft.AnimationCurve.FAST_OUT_SLOWIN`.
+        in_scale (float, optional): The starting scale for the "in" animation. Defaults to 0.2.
+        in_scale_curve (ft.AnimationCurve, optional): The animation curve for the "in" scale.
+            Defaults to `ft.AnimationCurve.FAST_OUT_SLOWIN`.
+        out_scale_curve (ft.AnimationCurve, optional): The animation curve for the "out" scale.
+            Defaults to `ft.AnimationCurve.FAST_OUT_SLOWIN`.
+        out_duration (int, optional): The duration of the "out" animation in milliseconds. Defaults to 500.
+        out_offset (ft.Offset, optional): The offset for the "out" animation. Defaults to `ft.Offset(0, 0)`.
+        out_opacity (float, optional): The ending opacity for the "out" animation. Defaults to 0.0.
+        out_scale (float, optional): The ending scale for the "out" animation. Defaults to 1.2.
+        bgcolors (dict, optional): A dictionary mapping notification types to background colors.
+            Defaults to a predefined set of colors for "info", "success", "warning", and "error".
+        icons (dict, optional): A dictionary mapping notification types to icon names.
+            Defaults to a predefined set of icons for "info", "success", "warning", and "error".
+        icon_colors (dict, optional): A dictionary mapping notification types to icon colors.
+            Defaults to a predefined set of colors for "info", "success", "warning", and "error".
+        text_colors (dict, optional): A dictionary mapping notification types to text colors.
+            Defaults to a predefined set of colors for "info", "success", "warning", and "error".
+    """
+
     height: int = 70
     width: int = 200
     spacing: int = 10
@@ -236,11 +278,42 @@ class NotificationBanner(ft.Container):
 
 
 class NotificationCenter(ft.Stack):
+    """
+    A custom Flet Stack widget designed to manage and display notifications.
+
+    This widget acts as a container for notifications, allowing them to be added,
+    removed, and displayed in a specific alignment. Notifications can be styled
+    using a custom `NotificationStyle`.
+
+    Attributes:
+        alignment (ft.alignment): The alignment of the notifications within the stack.
+            Defaults to `ft.alignment.top_left`.
+        notification_style (NotificationStyle, optional): The default style for notifications.
+            If not provided, a default style will be used.
+    """
+
     def __init__(
         self,
         alignment: ft.alignment = ft.alignment.top_left,
         notification_style: NotificationStyle = None,
     ):
+        """
+        Initializes a new instance of the NotificationCenter.
+
+        Args:
+            alignment (ft.alignment, optional): The alignment of the notifications within the stack.
+                Defaults to `ft.alignment.top_left`, can be `ft.alignment.top_right`.
+            notification_style (NotificationStyle, optional): The default style for notifications.
+                If not provided, a default style will be used. Defaults to None.
+
+        Example:
+            >>> notification_center = NotificationCenter(
+            ...     alignment=ft.alignment.top_right,
+            ...     notification_style=NotificationStyle(background_color="lightblue")
+            ... )
+            # Creates a NotificationCenter with notifications aligned to the top-right
+            # and a custom background color for notifications.
+        """
         super().__init__()
         self.notification_style = (
             notification_style if notification_style else NotificationStyle()
@@ -258,7 +331,39 @@ class NotificationCenter(ft.Stack):
         notification_type: str = "info",
         duration: int = 4000,
         notification_style: NotificationStyle = None,
+        index: int = -1,
     ):
+        """
+        Adds a new notification to the notifications list.
+
+        Args:
+            content (ft.Control, optional): The content of the notification.
+                This should be a Flet control (e.g., a Container, Text, etc.).
+                Defaults to an empty `ft.Container`.
+            notification_type (str, optional): The type of notification.
+                This can be used to categorize notifications (e.g., "info", "warning", "error").
+                Defaults to "info".
+            duration (int, optional): The duration in milliseconds for which the notification
+                will be displayed. Defaults to 4000 milliseconds (4 seconds).
+            notification_style (NotificationStyle, optional): Custom styling for the notification.
+                If not provided, the default style will be used. Defaults to None.
+            index (int, optional): The position at which the notification should be inserted.
+                If `index` is -1, the notification will be appended to the end of the list.
+                If `index` is greater than the length of the notifications list, it will be
+                inserted at the beginning (index 0). Defaults to -1.
+
+        Returns:
+            None
+
+        Example:
+            >>> self.add_notification(
+            ...     content=ft.Text("This is a notification"),
+            ...     notification_type="warning",
+            ...     duration=5000,
+            ...     index=0
+            ... )
+            # Adds a notification with custom content, type, duration, and inserts it at the beginning.
+        """
         new_notification = NotificationBanner(
             index=len(self.notifications),
             remove_cb=self._remove_notification,
@@ -267,9 +372,16 @@ class NotificationCenter(ft.Stack):
             notification_type=notification_type,
             notification_style=notification_style
             if notification_style
-            else self.notification_style,  # Cambio clave aquí,
+            else self.notification_style,
         )
-        self.notifications.append(new_notification)
+        if index == -1:
+            self.notifications.append(new_notification)
+        else:
+            if index > len(self.notifications):
+                self.notifications.insert(0, new_notification)
+            else:
+                self.notifications.insert(index, new_notification)
+
         self.controls = self.notifications
         self.update()
         self._rearrange_notifications()

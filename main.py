@@ -9,9 +9,10 @@ import random
 
 def main(page: ft.Page):
     noti_style_1 = NotificationStyle(
-        in_duration=500,
-        out_duration=1000,
+        in_duration=200,
+        out_duration=2000,
         in_scale=0.3,
+        in_scale_curve=ft.AnimationCurve.BOUNCE_OUT,
         in_opacity=0.5,
         in_offset=ft.Offset(-2, 0),
         in_offset_curve=ft.AnimationCurve.BOUNCE_OUT,
@@ -29,7 +30,9 @@ def main(page: ft.Page):
         in_offset=ft.Offset(0, -2),
         in_offset_curve=ft.AnimationCurve.FAST_OUT_SLOWIN,
         out_scale=1.5,
-        out_offset=ft.Offset(0, -4),
+        out_opacity=0.2,
+        out_offset_curve=ft.AnimationCurve.EASE_IN,
+        out_offset=ft.Offset(0, 8),
     )
 
     notification_center_1 = NotificationCenter(notification_style=noti_style_1)
@@ -54,6 +57,8 @@ def main(page: ft.Page):
             notification_center_2.add_notification(
                 ft.Text(random.choice(ran_words), color=ft.Colors.BLACK),
                 random.choice(noti_types).value,
+                index=0,
+                duration=0,
             )
         else:
             notification_center_1.add_notification(
@@ -63,6 +68,8 @@ def main(page: ft.Page):
             notification_center_2.add_notification(
                 ft.Text(random.choice(ran_words), color=ft.Colors.BLACK),
                 random.choice(noti_types).value,
+                index=0,
+                duration=0,
             )
 
     page.floating_action_button = ft.FloatingActionButton(
