@@ -1,3 +1,6 @@
+![Visitor Count](https://profile-counter.glitch.me/NotificationCenter/count.svg)
+
+
 # 🔔 Flet Notification Widget
 
 A customizable and animated notification widget for Flet apps. Display beautiful toast-style notifications with smooth animations, multiple types, and flexible positioning. Perfect for user feedback! 🎉
